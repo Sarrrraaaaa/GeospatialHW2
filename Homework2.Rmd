@@ -1,0 +1,60 @@
+---
+title: "Geospatial_HW2"
+output: html_document
+date: "2024-01-31"
+---
+
+```{r setup, include=FALSE}
+library(sf)
+library(spData)
+library(tidyverse)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+dir <- getwd()
+sf.world <- world
+```
+
+# Question 1
+
+### Most Populated Places
+```{r}
+popPlaces_path <- file.path(dir,"populated_places","ne_10m_populated_places.shp")
+popPlaces <- st_read(popPlaces_path)
+
+popPlacesEng <- popPlaces %>%
+  filter(POP_MAX > 100000) %>%
+  mutate("Pop" = sum(POP_MAX)) %>%
+  group_by("SOV0MANE") %>%
+  select("NAME","geometry", "Pop") 
+head(popPlacesEng)
+```
+### Airports
+
+```{r}
+airports_path <- file.path(dir,"ne_10m_airports","ne_10m_airports.shp")
+airports <- st_read(airports_path)
+
+airports <- airports %>%
+  select("name","geometry")
+
+head(airports)
+```
+
+```{r}
+ggplot() +
+  geom_sf(data = sf.world, fill =NA) + 
+  geom_sf(data = popPlacesEng, fill =NA) +
+  geom_sf(data = airports, fill = NA, pch = 17, color = "red")
+```
+# Question 2
+```{r}
+
+```
+
+
+
+
+
