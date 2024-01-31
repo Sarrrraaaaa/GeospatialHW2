@@ -8,6 +8,7 @@ date: "2024-01-31"
 library(sf)
 library(spData)
 library(tidyverse)
+library(spData)
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
@@ -34,6 +35,16 @@ head(popPlacesEng)
 ### Airports
 
 ```{r}
+ports_path <- file.path(dir,"populated_places","ne_10m_ports.shp")
+ports <- st_read(ports_path)
+
+ports <- ports %>%
+  select("name","geometry")
+
+head(ports)
+```
+
+```{r}
 airports_path <- file.path(dir,"ne_10m_airports","ne_10m_airports.shp")
 airports <- st_read(airports_path)
 
@@ -47,7 +58,8 @@ head(airports)
 ggplot() +
   geom_sf(data = sf.world, fill =NA) + 
   geom_sf(data = popPlacesEng, fill =NA) +
-  geom_sf(data = airports, fill = NA, pch = 17, color = "red")
+  geom_sf(data = airports, fill = NA, pch = 17, color = "red")+
+  geom_sf(data = ports, fill = NA, pch = 17, color ="lightblue")
 ```
 # Question 2
 ```{r}
